@@ -60,10 +60,10 @@ Orquestación de contenedores, clústeres de grado productivo y entrega continua
 
 Todas las implementaciones dentro de **`feversani-labs`** siguen cuatro principios innegociables de ingeniería Cloud:
 
-### 1. Entornos Efímeros y FinOps (Objetivo Costo ~\$0 en Labs)
+### 1. Entornos Efímeros y FinOps (Objetivo Costo `~$0 USD` en Labs)
 La mejor arquitectura de laboratorio es aquella que valida escenarios complejos de producción sin generar costos ociosos (*idle costs*).
 - **Ciclo de vida efímero (2h TTL):** Los laboratorios están pensados para levantarse en minutos (`terraform apply`), ejecutar pruebas de validación/carga y destruirse limpiamente (`terraform destroy`) dentro de ventanas de tiempo acotadas.
-- **Right-Sizing & Free-Tier Friendly:** Selección consciente de tipos de instancia, políticas de retención de logs y desacoplamiento de recursos con cobro por hora para mantener una factura cercana a **\$0 USD** fuera de las ventanas activas de prueba.
+- **Right-Sizing & Free-Tier Friendly:** Selección consciente de tipos de instancia, políticas de retención de logs y desacoplamiento de recursos con cobro por hora para mantener una factura cercana a **`$0 USD`** fuera de las ventanas activas de prueba.
 
 ### 2. Security by Default (Zero-Trust & SSH-less)
 - **Cero exposición innecesaria:** Ninguna instancia expone el puerto `22` (SSH) a Internet. Todo acceso operativo se realiza a través de **AWS Systems Manager (SSM) Session Manager** utilizando túneles cifrados y autenticados por IAM.
@@ -73,6 +73,10 @@ La mejor arquitectura de laboratorio es aquella que valida escenarios complejos 
 ### 3. Reproducibilidad e Idempotencia con IaC
 - **100% Declarativo:** Ningún cambio se realiza manualmente por consola (*ClickOps Free*). Toda configuración de red, cómputo, permisos y *bootstrapping* (`user_data`) vive en código versionado de **Terraform**.
 - **Desacoplamiento mediante SSM Parameter Store & S3:** El uso de `ephemeral-aws-sandbox` permite compartir metadatos y mantener el estado de Terraform seguro, bloqueado y centralizado sin *hardcodear* identificadores entre capas.
+
+### 4. Resiliencia y Alta Disponibilidad (Multi-AZ)
+- **Tolerancia a fallos por diseño:** Las topologías de red y cómputo distribuyen las cargas en múltiples Zonas de Disponibilidad (*Multi-AZ*), evitando puntos únicos de fallo (*SPOF*).
+- **Autorecuperación (*Self-Healing*):** Uso de *Health Checks* en balanceadores de carga (*ALB*) integrados con *Auto Scaling Groups* para reemplazar instancias degradadas de forma automática y transparente.
 
 ---
 
